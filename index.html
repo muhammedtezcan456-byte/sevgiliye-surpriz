@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sevgilime Sürpriz ❤️</title>
+    <style>
+        :root {
+            --primary-pink: #FF6B9D;
+            --soft-pink: #FFB6D3;
+            --rose: #FF4D6D;
+            --pastel-pink: #FFE5EC;
+            --dark-text: #5C3D4E;
+            --warm-gray: #8A6E7B;
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --shadow: 0 20px 60px rgba(255, 107, 157, 0.25);
+            --shadow-hover: 0 25px 70px rgba(255, 77, 109, 0.35);
+            --gradient-btn: linear-gradient(135deg, #FF6B9D, #FF4D6D);
+            --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Poppins', 'Quicksand', system-ui, sans-serif;
+            background: linear-gradient(135deg, #FFE5EC 0%, #FFD6E8 25%, #FFF0F5 50%, #FFE5EC 75%, #F8E8F0 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            color: var(--dark-text);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        #hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-heart {
+            position: absolute;
+            bottom: -60px;
+            animation: floatUp linear infinite;
+            will-change: transform, opacity;
+            user-select: none;
+            -webkit-user-select: none;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) translateX(0) rotate(0deg) scale(1); opacity: 0; }
+            5% { opacity: 0.7; }
+            50% { transform: translateY(-50vh) translateX(20px) rotate(15deg) scale(1.05); opacity: 0.5; }
+            95% { opacity: 0.6; }
+            100% { transform: translateY(-105vh) translateX(-15px) rotate(-10deg) scale(0.95); opacity: 0; }
+        }
+
+        .screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease, visibility 0.6s ease, transform 0.6s ease;
+            transform: translateY(30px);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .screen.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            z-index: 2;
+        }
+
+        .screen.exit-top {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-30px);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 32px;
+            padding: 40px 36px;
+            max-width: 560px;
+            width: 100%;
+            box-shadow: var(--shadow);
+            border: 2px solid rgba(255, 107, 157, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: relative;
+            transition: var(--transition);
+            text-align: center;
+            z-index: 1;
+            animation: cardAppear 0.6s ease forwards;
+        }
+
+        @keyframes cardAppear {
+            0% { transform: scale(0.85); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .card:hover { box-shadow: var(--shadow-hover); }
+
+        .progress-bar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #F0D5E0;
+            transition: var(--transition);
+        }
+
+        .progress-dot.active {
+            background: var(--gradient-btn);
+            box-shadow: 0 0 12px rgba(255, 107, 157, 0.5);
+            transform: scale(1.3);
+        }
+
+        .progress-dot.completed {
+            background: #FF6B9D;
+            opacity: 0.6;
+        }
+
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: var(--gradient-btn);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.3;
+            letter-spacing: -0.5px;
+        }
+
+        h2 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--dark-text);
+            line-height: 1.45;
+            letter-spacing: -0.3px;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--warm-gray);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .btn-primary {
+            background: var(--gradient-btn);
+            color: white;
+            border: none;
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-family: inherit;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 8px 24px rgba(255, 107, 157, 0.4);
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 14px 32px rgba(255, 77, 109, 0.5);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0) scale(0.97);
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.2);
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.25) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .btn-primary:hover::after { opacity: 1; }
+
+        .slider-container {
+            margin: 28px 0 32px;
+            padding: 0 8px;
+        }
+
+        .slider-value-display {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: var(--gradient-btn);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            transition: all 0.2s ease;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            border-radius: 10px;
+            background: linear-gradient(to right, #FFB6D3, #FF4D6D, #FF6B9D);
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: white;
+            border: 4px solid var(--primary-pink);
+            box-shadow: 0 4px 16px rgba(255, 107, 157, 0.5);
+            cursor: grab;
+            transition: all 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            box-shadow: 0 6px 24px rgba(255, 77, 109, 0.6);
+        }
+
+        input[type="range"]::-webkit-slider-thumb:active {
+            cursor: grabbing;
+            transform: scale(1.1);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: white;
+            border: 4px solid var(--primary-pink);
+            box-shadow: 0 4px 16px rgba(255, 107, 157, 0.5);
+            cursor: grab;
+            transition: all 0.2s ease;
+        }
+
+        input[type="range"]::-moz-range-thumb:hover { transform: scale(1.15); }
+        input[type="range"]::-moz-range-track {
+            height: 8px;
+            border-radius: 10px;
+            background: linear-gradient(to right, #FFB6D3, #FF4D6D, #FF6B9D);
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .option-item {
+            background: #FFF9FB;
+            border: 2.5px solid #F0D5E0;
+            border-radius: 18px;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+            color: var(--dark-text);
+            font-weight: 500;
+            text-align: left;
+            line-height: 1.5;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-item:hover {
+            border-color: var(--primary-pink);
+            background: #FFF0F5;
+            transform: translateX(6px);
+            box-shadow: 0 4px 16px rgba(255, 107, 157, 0.15);
+        }
+
+        .option-item.selected {
+            border-color: var(--primary-pink);
+            background: linear-gradient(135deg, #FFF0F5, #FFE5EC);
+            box-shadow: 0 6px 20px rgba(255, 107, 157, 0.25);
+            transform: translateX(6px);
+            font-weight: 600;
+        }
+
+        .option-item.selected::before {
+            content: '💗 ';
+            margin-right: 4px;
+        }
+
+        .option-item .option-emoji {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* DÜZELTME: Buton grubu güçlendirildi */
+        .button-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            position: relative;
+            min-height: 80px;
+            margin-top: 10px;
+            z-index: 1;
+        }
+
+        .btn-yes {
+            background: var(--gradient-btn);
+            color: white;
+            border: none;
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-family: inherit;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 8px 24px rgba(255, 107, 157, 0.4);
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            position: relative;
+            z-index: 9999; /* En üstte */
+            pointer-events: auto; /* Tıklanabilirlik garantisi */
+        }
+
+        .btn-yes:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 14px 32px rgba(255, 77, 109, 0.5);
+        }
+
+        .btn-yes:active { transform: translateY(0) scale(0.97); }
+
+        .btn-no {
+            background: #F5E6EE;
+            color: var(--dark-text);
+            border: 2px solid #E8D0DC;
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-family: inherit;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            position: relative;
+            z-index: 5; /* Yes'ten daha düşük, ama yine de görünür */
+            pointer-events: auto;
+        }
+
+        .btn-no.running {
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px) rotate(-3deg); }
+            75% { transform: translateX(8px) rotate(3deg); }
+        }
+
+        .warning-message {
+            color: #FF4D6D;
+            font-weight: 600;
+            font-size: 1.05rem;
+            margin-top: 16px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.4s var(--bounce);
+            min-height: 30px;
+        }
+
+        .warning-message.show {
+            opacity: 1;
+            transform: scale(1);
+            animation: bounceIn 0.5s var(--bounce);
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            60% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        #screen-5 { z-index: 3; }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .letter-card {
+            position: relative;
+            z-index: 1;
+            max-width: 620px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px solid rgba(255, 107, 157, 0.2);
+            animation: letterReveal 0.8s var(--bounce) forwards;
+            transform-origin: center;
+        }
+
+        @keyframes letterReveal {
+            0% { transform: scale(0.7) rotate(-2deg); opacity: 0; }
+            60% { transform: scale(1.03) rotate(0.5deg); opacity: 1; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .letter-content {
+            font-family: 'Brush Script MT', 'Comic Sans MS', 'Dancing Script', cursive;
+            font-size: 1.35rem;
+            line-height: 1.8;
+            color: #4A3040;
+            text-align: left;
+            padding: 20px 10px;
+            max-height: 380px;
+            overflow-y: auto;
+            letter-spacing: 0.3px;
+        }
+
+        .letter-content p { margin-bottom: 14px; }
+
+        .letter-content .signature {
+            text-align: right;
+            font-style: italic;
+            margin-top: 20px;
+            font-weight: 600;
+            color: #FF4D6D;
+        }
+
+        .letter-seal {
+            display: inline-block;
+            font-size: 3rem;
+            margin-bottom: 12px;
+            animation: sealPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes sealPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .btn-hug {
+            background: linear-gradient(135deg, #FF6B9D, #E63946);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 60px;
+            font-family: inherit;
+            font-size: 1.15rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 8px 28px rgba(255, 77, 109, 0.45);
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            position: relative;
+            overflow: visible;
+            margin-top: 20px;
+        }
+
+        .btn-hug:hover {
+            transform: translateY(-3px) scale(1.04);
+            box-shadow: 0 14px 36px rgba(230, 57, 70, 0.55);
+        }
+        .btn-hug:active { transform: translateY(0) scale(0.97); }
+
+        .hug-heart-burst {
+            position: absolute;
+            pointer-events: none;
+            animation: heartBurst 1s ease-out forwards;
+            font-size: 1.5rem;
+            z-index: 10;
+        }
+
+        @keyframes heartBurst {
+            0% { transform: translate(0, 0) scale(0); opacity: 1; }
+            50% { opacity: 1; transform: translate(var(--burst-x), var(--burst-y)) scale(1.3); }
+            100% { transform: translate(var(--burst-x2), var(--burst-y2)) scale(0); opacity: 0; }
+        }
+
+        .heart-rain {
+            position: fixed;
+            top: -40px;
+            animation: heartRainFall linear forwards;
+            pointer-events: none;
+            z-index: 0;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        @keyframes heartRainFall {
+            0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.9; }
+            100% { transform: translateY(110vh) rotate(360deg) scale(0.6); opacity: 0; }
+        }
+
+        @media (max-width: 600px) {
+            .card { padding: 28px 22px; border-radius: 24px; margin: 10px; }
+            h1 { font-size: 1.5rem; }
+            h2 { font-size: 1.15rem; }
+            .slider-value-display { font-size: 1.7rem; }
+            .btn-primary, .btn-yes, .btn-no { padding: 14px 24px; font-size: 0.95rem; }
+            .button-group { gap: 10px; flex-direction: column; min-height: 140px; }
+            .letter-content { font-size: 1.15rem; max-height: 300px; }
+            .btn-hug { padding: 15px 28px; font-size: 1rem; }
+            .option-item { padding: 13px 16px; font-size: 0.9rem; }
+        }
+
+        @media (max-width: 380px) {
+            .card { padding: 20px 16px; border-radius: 20px; }
+            h1 { font-size: 1.3rem; }
+            h2 { font-size: 1rem; }
+            .slider-value-display { font-size: 1.4rem; }
+        }
+
+        .letter-content::-webkit-scrollbar { width: 6px; }
+        .letter-content::-webkit-scrollbar-track { background: transparent; }
+        .letter-content::-webkit-scrollbar-thumb { background: #FFB6D3; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <div id="hearts-bg"></div>
+
+    <!-- Screen 1 -->
+    <div class="screen active" id="screen-1">
+        <div class="card">
+            <div style="font-size:4rem; margin-bottom:10px; animation: sealPulse 2s ease-in-out infinite;">💌</div>
+            <h1>Aramızdaki Mesafeler Sana Olan Sevgime Engel Değil ❤️</h1>
+            <p class="subtitle">Senin için hazırladığım küçük bir sürpriz var... Hazır mısın?</p>
+            <button class="btn-primary" onclick="goToScreen(2)">Sürprize Başla ✨</button>
+            <div class="progress-bar" style="margin-top:24px; margin-bottom:0;">
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 2 -->
+    <div class="screen" id="screen-2">
+        <div class="card">
+            <div class="progress-bar">
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+                <div class="progress-dot"></div>
+            </div>
+            <h2>Aramızdaki kilometreler ne kadar olursa olsun, beni kalbinde ne kadar yakın hissediyorsun? 💕</h2>
+            <div class="slider-container">
+                <div class="slider-value-display" id="slider-display">%500.000</div>
+                <input type="range" id="love-slider" min="0" max="1000000" value="500000" step="1000" oninput="updateSlider()">
+                <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:var(--warm-gray); margin-top:8px;">
+                    <span>%0</span>
+                    <span>%250.000</span>
+                    <span>%500.000</span>
+                    <span>%750.000</span>
+                    <span>%1.000.000</span>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="goToScreen(3)">Devam Et 💗</button>
+        </div>
+    </div>
+
+    <!-- Screen 3 -->
+    <div class="screen" id="screen-3">
+        <div class="card">
+            <div class="progress-bar">
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot active"></div>
+                <div class="progress-dot"></div>
+            </div>
+            <h2>Attığım mesajlar arasında en çok hangisi seni gülümsetiyor? 🌟</h2>
+            <div class="options-container">
+                <div class="option-item" onclick="selectOption(this)" data-value="1">
+                    <span class="option-emoji">🌅</span> "Günaydın güzelim, bugün de seni düşünerek uyandım..."
+                </div>
+                <div class="option-item" onclick="selectOption(this)" data-value="2">
+                    <span class="option-emoji">💫</span> "İyi geceler... Rüyalarında buluşalım olur mu?"
+                </div>
+                <div class="option-item" onclick="selectOption(this)" data-value="3">
+                    <span class="option-emoji">❤️</span> "Kilometreler önemli değil, kalbim hep seninle atıyor."
+                </div>
+                <div class="option-item" onclick="selectOption(this)" data-value="4">
+                    <span class="option-emoji">✨</span> "Bir gün aynı gökyüzünün altında, aynı evde olacağız."
+                </div>
+            </div>
+            <button class="btn-primary" id="continue-btn-3" onclick="goToScreen(4)" disabled>Devam Et 💕</button>
+        </div>
+    </div>
+
+    <!-- Screen 4 -->
+    <div class="screen" id="screen-4">
+        <div class="card" style="position:relative; overflow:visible;">
+            <div class="progress-bar">
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot completed"></div>
+                <div class="progress-dot active"></div>
+            </div>
+            <h2>Bu gece bana en tatlı mesajını atıp uyumaya söz veriyor musun? 🌙</h2>
+            <div class="button-group" id="button-group">
+                <button class="btn-yes" id="yes-btn" onclick="goToScreen(5)">Söz Veriyorum! ❤️</button>
+                <button class="btn-no" id="no-btn" onmouseenter="runAway()" ontouchstart="runAwayMobile(event)" onclick="showWarning()">Hayır</button>
+            </div>
+            <div class="warning-message" id="warning-msg">Kabul edilmedi, o söze basılacak! 😜</div>
+        </div>
+    </div>
+
+    <!-- Screen 5 -->
+    <div class="screen" id="screen-5">
+        <canvas id="confetti-canvas"></canvas>
+        <div class="letter-card card">
+            <div class="letter-seal">💌</div>
+            <h2 style="font-size:1.5rem; margin-bottom:8px;">Sana Özel Bir Mektup</h2>
+            <div class="letter-content" id="letter-text">
+                <p>Sevgilim,</p>
+                <p>Aramızdaki kilometreler sadece birer sayıdan ibaret. Attığın her mesaj, yazdığın her kelime, ekranın soğuk ışığını sıcacık bir kucağa dönüştürüyor. Seni göremesem de, sesini duyamasam da, kalbimin her atışında seni hissediyorum.</p>
+                <p>Bu mesafeler geçici, ama sana olan sevgim sonsuz. Her gün aynı gökyüzüne bakıp aynı yıldızları sayacağımız günün hayaliyle yaşıyorum. O gün geldiğinde, bu mesafelerin bizi ne kadar güçlendirdiğini göreceğiz.</p>
+                <p>Seni her şeyden çok seviyorum. İyi geceler, en güzel rüyalar seninle olsun... 💕</p>
+                <p class="signature">— Sonsuza kadar seninim ❤️</p>
+            </div>
+            <button class="btn-hug" id="hug-btn" onclick="sendHug()">Sana Kocaman Bir Sarılma Gönder 🤗</button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // Floating hearts
+            const heartsContainer = document.getElementById('hearts-bg');
+            const heartEmojis = ['💕', '💗', '💓', '💖', '💘', '💝', '❤️', '🩷', '♥', '💜'];
+            for (let i = 0; i < 25; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                const size = Math.random() * 22 + 12;
+                const left = Math.random() * 100;
+                const duration = Math.random() * 15 + 10;
+                const delay = Math.random() * 12;
+                const opacity = Math.random() * 0.4 + 0.25;
+                heart.style.cssText = `
+                    left: ${left}%;
+                    font-size: ${size}px;
+                    animation-duration: ${duration}s;
+                    animation-delay: ${delay}s;
+                    opacity: ${opacity};
+                `;
+                heartsContainer.appendChild(heart);
+            }
+
+            // Screen management
+            window.currentScreen = 1;
+            window.selectedOption = null;
+
+            window.goToScreen = function(targetScreen) {
+                if (targetScreen <= window.currentScreen) return;
+                // Sadece 4. ekrana geçerken seçim zorunlu
+                if (targetScreen === 4 && !window.selectedOption) return;
+
+                const currentEl = document.getElementById(`screen-${window.currentScreen}`);
+                const targetEl = document.getElementById(`screen-${targetScreen}`);
+                if (!currentEl || !targetEl) return;
+
+                currentEl.classList.remove('active');
+                currentEl.classList.add('exit-top');
+                setTimeout(() => {
+                    currentEl.classList.remove('exit-top');
+                }, 650);
+
+                setTimeout(() => {
+                    targetEl.classList.add('active');
+                    window.currentScreen = targetScreen;
+                    if (targetScreen === 5) {
+                        startFinalCelebration();
+                    }
+                }, 250);
+            };
+
+            window.updateSlider = function() {
+                const slider = document.getElementById('love-slider');
+                const display = document.getElementById('slider-display');
+                const value = parseInt(slider.value);
+                display.textContent = '%' + value.toLocaleString('tr-TR');
+            };
+            window.updateSlider();
+
+            window.selectOption = function(element) {
+                document.querySelectorAll('.option-item').forEach(opt => opt.classList.remove('selected'));
+                element.classList.add('selected');
+                window.selectedOption = element.dataset.value;
+                const btn = document.getElementById('continue-btn-3');
+                btn.disabled = false;
+                btn.style.opacity = '1';
+            };
+
+            let yesBtnScale = 1;
+            window.runAway = function() {
+                const noBtn = document.getElementById('no-btn');
+                const group = document.getElementById('button-group');
+                if (!noBtn || !group) return;
+                const groupRect = group.getBoundingClientRect();
+                const btnRect = noBtn.getBoundingClientRect();
+                // Maksimum sınırları daraltarak Yes butonunun üstüne gelmesini engelle
+                const maxX = Math.max(groupRect.width - btnRect.width - 30, 10);
+                const maxY = Math.max(groupRect.height - btnRect.height - 30, 10);
+                const randomX = Math.random() * maxX;
+                const randomY = Math.random() * maxY;
+                noBtn.style.position = 'absolute';
+                noBtn.style.left = randomX + 'px';
+                noBtn.style.top = randomY + 'px';
+                noBtn.style.transition = 'all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+                yesBtnScale += 0.06;
+                const yesBtn = document.getElementById('yes-btn');
+                yesBtn.style.transform = `scale(${yesBtnScale})`;
+                noBtn.classList.add('running');
+                setTimeout(() => noBtn.classList.remove('running'), 400);
+                const warning = document.getElementById('warning-msg');
+                warning.classList.remove('show');
+            };
+
+            window.runAwayMobile = function(e) {
+                e.preventDefault();
+                window.runAway();
+                window.showWarning();
+            };
+
+            window.showWarning = function() {
+                const warning = document.getElementById('warning-msg');
+                warning.classList.add('show');
+                setTimeout(() => warning.classList.remove('show'), 2000);
+            };
+
+            let confettiActive = false;
+            let heartRainActive = false;
+
+            function startFinalCelebration() {
+                if (!confettiActive) {
+                    confettiActive = true;
+                    startConfetti();
+                }
+                if (!heartRainActive) {
+                    heartRainActive = true;
+                    startHeartRain();
+                }
+            }
+
+            function startConfetti() {
+                const canvas = document.getElementById('confetti-canvas');
+                const ctx = canvas.getContext('2d');
+                let particles = [];
+                function resizeCanvas() {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                }
+                resizeCanvas();
+                window.addEventListener('resize', resizeCanvas);
+                const colors = ['#FF6B9D', '#FF4D6D', '#FFB6D3', '#FFD700', '#FF8FAB', '#F06292', '#EC407A', '#FFFFFF', '#FFC4D6', '#E63946', '#FFE5EC'];
+                class Particle {
+                    constructor() {
+                        this.x = Math.random() * canvas.width;
+                        this.y = Math.random() * canvas.height - canvas.height;
+                        this.width = Math.random() * 10 + 5;
+                        this.height = Math.random() * 6 + 3;
+                        this.color = colors[Math.floor(Math.random() * colors.length)];
+                        this.rotation = Math.random() * Math.PI * 2;
+                        this.rotationSpeed = (Math.random() - 0.5) * 0.15;
+                        this.speedY = Math.random() * 3 + 2;
+                        this.speedX = (Math.random() - 0.5) * 1.5;
+                        this.swing = Math.random() * 0.03;
+                        this.swingSpeed = Math.random() * 0.02 + 0.01;
+                        this.type = Math.random() > 0.3 ? 'rect' : 'heart';
+                        this.opacity = Math.random() * 0.5 + 0.5;
+                    }
+                    update() {
+                        this.y += this.speedY;
+                        this.x += this.speedX + Math.sin(this.y * this.swing) * 0.5;
+                        this.rotation += this.rotationSpeed;
+                        if (this.y > canvas.height + 30) { this.y = -30; this.x = Math.random() * canvas.width; this.speedY = Math.random() * 3 + 2; }
+                        if (this.x > canvas.width + 50) this.x = -20;
+                        if (this.x < -50) this.x = canvas.width + 20;
+                    }
+                    draw(ctx) {
+                        ctx.save();
+                        ctx.translate(this.x, this.y);
+                        ctx.rotate(this.rotation);
+                        ctx.globalAlpha = this.opacity;
+                        if (this.type === 'rect') {
+                            ctx.fillStyle = this.color;
+                            ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
+                            ctx.shadowColor = this.color;
+                            ctx.shadowBlur = 4;
+                        } else {
+                            ctx.fillStyle = this.color;
+                            ctx.shadowColor = this.color;
+                            ctx.shadowBlur = 6;
+                            const size = this.width * 0.8;
+                            ctx.beginPath();
+                            ctx.moveTo(0, size * 0.3);
+                            ctx.bezierCurveTo(size * 0.5, -size * 0.3, size * 1.2, size * 0.2, 0, size * 1.1);
+                            ctx.bezierCurveTo(-size * 1.2, size * 0.2, -size * 0.5, -size * 0.3, 0, size * 0.3);
+                            ctx.fill();
+                        }
+                        ctx.restore();
+                        ctx.globalAlpha = 1;
+                        ctx.shadowBlur = 0;
+                    }
+                }
+                for (let i = 0; i < 120; i++) {
+                    const p = new Particle();
+                    p.y = Math.random() * canvas.height;
+                    particles.push(p);
+                }
+                function animateConfetti() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    particles.forEach(p => { p.update(); p.draw(ctx); });
+                    requestAnimationFrame(animateConfetti);
+                }
+                animateConfetti();
+            }
+
+            function startHeartRain() {
+                const heartEmojis = ['💕', '💗', '💓', '💖', '💘', '💝', '❤️', '🩷', '💜', '♥'];
+                const interval = setInterval(() => {
+                    if (!document.getElementById('screen-5').classList.contains('active')) {
+                        clearInterval(interval);
+                        return;
+                    }
+                    const heart = document.createElement('div');
+                    heart.className = 'heart-rain';
+                    heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                    heart.style.left = Math.random() * 95 + '%';
+                    heart.style.fontSize = (Math.random() * 22 + 14) + 'px';
+                    heart.style.animationDuration = (Math.random() * 4 + 3) + 's';
+                    heart.style.opacity = Math.random() * 0.5 + 0.4;
+                    heart.style.zIndex = '0';
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 7000);
+                }, 250);
+            }
+
+            window.sendHug = function() {
+                const btn = document.getElementById('hug-btn');
+                const btnRect = btn.getBoundingClientRect();
+                const centerX = btnRect.left + btnRect.width / 2;
+                const centerY = btnRect.top + btnRect.height / 2;
+                const heartEmojis = ['💕', '💗', '💓', '💖', '💘', '💝', '❤️', '🤗', '💜', '🩷'];
+                for (let i = 0; i < 18; i++) {
+                    const heart = document.createElement('span');
+                    heart.className = 'hug-heart-burst';
+                    heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                    const angle = (Math.PI * 2 * i) / 18;
+                    const distance = Math.random() * 120 + 60;
+                    const distance2 = distance + Math.random() * 80 + 40;
+                    const burstX = Math.cos(angle) * distance;
+                    const burstY = Math.sin(angle) * distance - 40;
+                    const burstX2 = Math.cos(angle) * distance2;
+                    const burstY2 = Math.sin(angle) * distance2 - 60;
+                    heart.style.cssText = `
+                        position: fixed;
+                        left: ${centerX}px;
+                        top: ${centerY}px;
+                        font-size: ${Math.random() * 20 + 18}px;
+                        --burst-x: ${burstX}px;
+                        --burst-y: ${burstY}px;
+                        --burst-x2: ${burstX2}px;
+                        --burst-y2: ${burstY2}px;
+                        animation-duration: ${Math.random() * 0.4 + 0.8}s;
+                        z-index: 100;
+                        pointer-events: none;
+                        user-select: none;
+                        -webkit-user-select: none;
+                    `;
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 1500);
+                }
+                btn.style.transform = 'scale(1.1)';
+                setTimeout(() => btn.style.transform = 'scale(1)', 300);
+                const hugMsg = document.createElement('div');
+                hugMsg.textContent = '🤗 Kocaman Sarıldım! 🤗';
+                hugMsg.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%) scale(0);
+                    font-size: 2rem;
+                    font-weight: 700;
+                    color: #FF4D6D;
+                    z-index: 200;
+                    pointer-events: none;
+                    user-select: none;
+                    -webkit-user-select: none;
+                    text-shadow: 0 4px 20px rgba(255,77,109,0.5);
+                    animation: hugPop 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+                    white-space: nowrap;
+                    font-family: inherit;
+                `;
+                document.body.appendChild(hugMsg);
+                setTimeout(() => hugMsg.remove(), 1700);
+            };
+
+            const hugPopStyle = document.createElement('style');
+            hugPopStyle.textContent = `
+                @keyframes hugPop {
+                    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+                    30% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+                    50% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+                    80% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
+                    100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(hugPopStyle);
+
+            // Klavye: E, Enter, Space ile ilerle
+            document.addEventListener('keydown', (e) => {
+                const key = e.key.toLowerCase();
+                const activeScreen = document.querySelector('.screen.active');
+                if (!activeScreen) return;
+                if (key === 'e' || key === 'enter' || key === ' ') {
+                    e.preventDefault();
+                    const btn = activeScreen.querySelector('.btn-primary:not(:disabled), .btn-yes');
+                    if (btn) {
+                        btn.click();
+                    }
+                }
+            });
+
+            document.getElementById('no-btn').addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                window.runAwayMobile(e);
+            }, { passive: false });
+
+            console.log('💕 Sürpriz hazır! Artık her şey çalışıyor. 💕');
+        })();
+    </script>
+</body>
+</html>
